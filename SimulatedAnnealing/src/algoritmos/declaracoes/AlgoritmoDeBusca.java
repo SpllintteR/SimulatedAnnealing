@@ -6,6 +6,6 @@ import pkg.Ponto;
 
 public interface AlgoritmoDeBusca {
 	
-	public Caminho buscaCaminhoMaisProximo(Ponto entrada, Ponto saida);
+	public Caminho buscaCaminhoMaisProximo(Ponto entrada, Ponto saida, int limite);
 	
 }

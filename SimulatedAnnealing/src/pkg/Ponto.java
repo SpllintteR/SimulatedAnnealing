@@ -11,16 +11,19 @@ public class Ponto {
 	private int y;
 	private String nome;
 	private Map<String, Ligacao> ligacoes;
+	private Map<Integer, Integer> ligacoesAleatoriasRetornadas;
 	
 	public Ponto(int x, int y, String nome) {
-		super();
+		ligacoes = new HashMap<>();
 		this.x = x;
 		this.y = y;
 		this.nome = nome;
+		ligacoesAleatoriasRetornadas = new HashMap<>();
 	}
 
 	public Ponto() {
 		ligacoes = new HashMap<>();
+		ligacoesAleatoriasRetornadas = new HashMap<>();
 	}
 
 	public void adicionaLigacao(Ligacao b) {
@@ -28,14 +31,20 @@ public class Ponto {
 	}
 	
 	public Ligacao buscaLigacaoAleatoria(){
-		if (ligacoes.size() == 0){
+		if (ligacoes.size() == 0 || ligacoesAleatoriasRetornadas.size() == ligacoes.size()){
 			return null;
 		}
-		return ligacoes.get(new Random().nextInt(ligacoes.size()));
+		int index;
+		do{
+			index = new Random().nextInt(ligacoes.size());
+		}while(ligacoesAleatoriasRetornadas.containsKey(index));
+		
+		ligacoesAleatoriasRetornadas.put(index, index);
+		return getLigacao(index);
 	}
 	
 	public Ligacao getLigacao(int index){
-		return ligacoes.get(index);
+		return (Ligacao) ligacoes.values().toArray()[index];
 	}
 
 	/**
@@ -73,6 +82,52 @@ public class Ponto {
 	public void removeLigacao(Ponto b) {
 		ligacoes.remove(getNome() + b.getNome());
 		ligacoes.remove(b.getNome() + getNome());
+	}
+
+	public Map<String, Ligacao> getLigacoes() {
+		return ligacoes;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return getNome();
+	}
+
+	public void limparLigacoesAleatorias() {
+		ligacoesAleatoriasRetornadas.clear();
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return getNome().hashCode();
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null){
+			return false;
+		}
+		Ponto p = (Ponto) obj ;
+		boolean result = getX() == p.getX();
+		result &= getY() == p.getY();
+		result &= getNome().equals(p.getNome());
+		result &= getLigacoes().size() == p.getLigacoes().size();
+//		for(Ligacao ligacao: ligacoes.values()){
+//			result &= ligacao.equals(p.getLigacoes().get(ligacao.getNome()));
+//			if(!result){
+//				break;
+//			}
+//		}
+		return result;
 	}
 	
 }

@@ -40,5 +40,16 @@ public class Caminho {
 		}
 		return found;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for(int i = ligacoes.size() - 1; i >= 0 ; i--){
+			sb.append(ligacoes.get(i).getNome());
+		}
+		return sb.toString();
+	}
 }
